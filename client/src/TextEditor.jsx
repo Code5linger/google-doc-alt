@@ -25,8 +25,6 @@ const TextEditor = () => {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
 
-  console.log(documentId);
-
   useEffect(() => {
     const soc = io('http://localhost:5174');
     setSocket(soc);

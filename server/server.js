@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
 const Document = require('./Document');
 const { Server } = require('socket.io');
+require('dotenv').config();
 
 // MongoDB Atlas connection string
-const uri =
-  'mongodb+srv://googledocsclone:googledocsclone@cluster0.mhtwx9f.mongodb.net/google-docs-clone?retryWrites=true&w=majority&appName=Cluster0';
+const uri = `mongodb+srv://googledocsclone:googledocsclone@cluster0.mhtwx9f.mongodb.net/google-docs-clone?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Mongoose connection
-mongoose
-  .connect(uri)
-  .then(() => console.log('Connected to MongoDB Atlas via Mongoose'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+mongoose.connect(uri);
 
 const io = new Server(5174, {
   cors: {
@@ -28,11 +25,7 @@ const io = new Server(5174, {
 
 const defaultValue = '';
 
-console.log('Socket.IO server is running on port 5174');
-
 io.on('connection', (socket) => {
-  console.log('New client connected');
-
   socket.on('get-document', async (documentId) => {
     const document = await findOrCreateDocument(documentId);
     socket.join(documentId);
